@@ -1,6 +1,5 @@
-# Dot Env Loader
-> used for reading env files
-## Install & Dependence
+# fetch 
+> sample wrap for curl request
 
 ## Install & Dependence
 
