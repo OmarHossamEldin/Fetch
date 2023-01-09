@@ -1,4 +1,6 @@
-# PHP CLI
+# Dot Env Loader
+> used for reading env files
+## Install & Dependence
 
 ## Install & Dependence
 
@@ -10,14 +12,24 @@
   composer test
   ```
 
+## Usage
+
+```php
+  $httpRequest = new HttpRequest();
+  $response = $httpRequest->set_base_url('https://jsonplaceholder.typicode.com')
+    ->set_headers(['Content-Type' => 'application/json'])
+    ->get('/todos');
+  // or
+  $httpRequest = new HttpRequest();
+  $httpRequest->set_base_url('https://jsonplaceholder.typicode.com');
+  $httpRequest->set_headers(['Content-Type' => 'application/json']);
+  $response = $httpRequest->get('/todos');
+````
 ## Directory structure
 
 ```tree
-|—— .github
-|    |—— workflows
-|        |—— ci.yml
 |—— .gitignore
-|—— app
+|—— src
 |—— composer.json
 |—— composer.lock
 |—— developer
