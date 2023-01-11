@@ -89,12 +89,10 @@ class HttpRequest
         if (!$result) {
             return $response;
         }
-        if ($this->headers['Content-Type'] === 'application/xml') {
-            return $response;
-        }
         if ($this->headers['Content-Type'] === 'application/json') {
             return json_decode($response, true);
         }
+        return $response;
     }
 
     private function parsing_headers(array $headers): array
