@@ -34,7 +34,7 @@ class HttpRequest
         return $this->send_request();
     }
 
-    public function post(string $url, array $data = []): array
+    public function post(string $url, $data = []): array
     {
         $this->baseUrl .= $url;
         curl_setopt($this->curl, CURLOPT_URL, $this->baseUrl);
@@ -43,7 +43,7 @@ class HttpRequest
     }
 
 
-    public function patch(string $url, array $data = []): array
+    public function patch(string $url, $data = []): array
     {
         $this->baseUrl .= $url;
         curl_setopt($this->curl, CURLOPT_URL, $this->baseUrl);
@@ -51,7 +51,7 @@ class HttpRequest
         return $this->send_request($data);
     }
 
-    public function put(string $url, array $data = []): array
+    public function put(string $url, $data = []): array
     {
         $this->baseUrl .= $url;
         curl_setopt($this->curl, CURLOPT_URL, $this->baseUrl);
@@ -59,7 +59,7 @@ class HttpRequest
         return $this->send_request($data);
     }
 
-    public function delete(string $url, array $data = []): array
+    public function delete(string $url, $data = []): array
     {
         $this->baseUrl .= $url;
         curl_setopt($this->curl, CURLOPT_URL, $this->baseUrl);
@@ -67,7 +67,7 @@ class HttpRequest
         return $this->send_request($data);
     }
 
-    private function send_request(array $data = []): array
+    private function send_request($data = []): array
     {
         if (!empty($data)) {
             curl_setopt($this->curl, CURLOPT_POSTFIELDS, $data);
@@ -75,22 +75,20 @@ class HttpRequest
 
         curl_setopt($this->curl, CURLOPT_RETURNTRANSFER, true);
         $body = curl_exec($this->curl);
+        $statusCode = curl_getinfo($this->curl, CURLINFO_RESPONSE_CODE);
         curl_close($this->curl);
 
         return [
             'body' => $this->parsing_body($body),
-            'statusCode' => curl_getinfo($this->curl, CURLINFO_RESPONSE_CODE)
+            'statusCode' => $statusCode
         ];
     }
 
     private function parsing_body(?string $response)
     {
-        $result = array_key_exists('Content-Type', $this->headers);
-        if (!$result) {
-            return $response;
-        }
-        if ($this->headers['Content-Type'] === 'application/json') {
-            return json_decode($response, true);
+        if(in_array('Content-Type: application/json',$this->headers,true))
+        {
+           return json_decode($response, true); 
         }
         return $response;
     }
